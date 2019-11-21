@@ -1,3 +1,51 @@
+"""
+Author: Grant Mitchell
+Date: 11/22/19
+PA #5 NLP
+
+This program is the scorer for the tagger program. We take the POS tags assigned to the test data and compare it to the
+POS tags of the correct tags for the words. When we do this we compute the overall accuracy and a confusion matrix. The
+confusion matrix is as follows:
+
+- For correct classifications
+    DET DET : 10,000
+    meaning that 10,000 determiners (DET) were correctly identified as determiners.
+
+- For incorrect classifications report (for example)
+    NN VBD : 5
+    meaning that 5 past tense verbs (VBD) were incorrectly tagged as nouns (NN). Please list the predicted tag first
+    (NN) followed by the actual gold tag (VBD)
+
+Example Input:
+    ./scorer pos-test-with-tags-basic.txt pos-key.txt > basic-tagger-scores.txt
+
+Example Output:
+    The total accuracy of this POS Tagger is: 92.1177671406448%
+    -------------------------------Correct POS Pairs-----------------------------------------------------
+    , ,: 3070
+    PRP PRP: 1042
+    VBD VBD: 1573
+    RB RB: 1724
+    -------------------------------Incorrect POS Pairs-----------------------------------------------------
+    DT RB: 14
+    NN VB: 261
+    VBN VBD: 223
+
+Algorithm:
+- Grab all of the command line variables and assign them to variables
+- Score test tagging
+    - Process test and key files
+        - For each line in the file extract just the POS tag and add it to a list
+        - End up with two list (list of test tags and list of key tags)
+    - Calculate the scores
+        - For each index pair in the two lists compare their tags
+            - If they are the same the tagger got it correct and we should increment the correct counter
+            - Concatenate the tags into one string and add it to the correct dict and if it is already in the dict we
+              increment the value. This will give us a value for the number of occurrences
+            - If they are different do the same thing as the above step but add it to the incorrect dict
+        - Calculate the overall accuracy num of correct/num of tags * 100
+    - Print the scores to stdout
+"""
 import re
 import sys
 
